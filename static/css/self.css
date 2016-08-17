@@ -1,0 +1,63 @@
+html {
+    height: 100%;
+}
+body {
+    height: 100%;
+}
+
+
+.baidumap {
+    height: 80%;
+}
+
+.c-f{
+    height: 100%;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.row-first {
+    height:100%;
+    overflow: hidden;
+}
+#allmap {
+    height: 100%;
+    overflow: hidden;
+    margin:0;
+    font-family:"微软雅黑";
+}
+.titlebg {
+    background-color: rgb(49,140,135);
+    height:40px;
+    border:2px;
+    border-color:#333;
+    font-color:white;
+
+}
+.headerbgc {
+    background: linear-gradient(to bottom, white, rgb(96,180,173));
+    height:50px;
+}
+.headerfont {
+    font-size:20px;
+}
+.Absolute-Center {  
+    margin: auto;  
+    position: absolute;  
+    top: 0; left: 0; bottom: 0; right: 0;  
+}
+.col-center-block {  
+    float: none;  
+    display: block;  
+    margin-left: auto;  
+    margin-right: auto;  
+}  
+.button_style{   
+    background-color: Transparent;
+    border: none;             /* Your can add different style/properties of button Here*/
+    cursor:pointer;    
+}
+
+.header-height{
+    height:50px;
+}
