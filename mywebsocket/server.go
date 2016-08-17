@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path"
 
 	"golang.org/x/net/websocket"
 )
@@ -34,6 +35,7 @@ type Command struct {
 }
 
 var deviceList []*device
+var tempWs *websocket.Conn
 
 var port *int = flag.Int("p", 23456, "Port to listen.")
 
@@ -124,6 +126,15 @@ func clientMainServer(ws *websocket.Conn) {
 			fmt.Println(command.CommandMessage)
 
 		case TAKE_PHOTO:
+			b, err := json.Marshal(command)
+
+			command.CommandMessage = "http://192.168.1.103:23456/static/img/image.jpg"
+			err = websocket.Message.Send(tempWs, string(b))
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+
 			fmt.Println(command.CommandMessage)
 		}
 
@@ -195,6 +206,7 @@ func webControlServer(ws *websocket.Conn) {
 			clientTakePhotoCommand.CommandMessage = "take photo"
 			b, err := json.Marshal(clientTakePhotoCommand)
 			err = websocket.Message.Send(selectDevice.Ws, string(b))
+			tempWs = ws
 			if err != nil {
 				fmt.Println(err)
 				return
@@ -224,7 +236,9 @@ func upload(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 	fmt.Fprintf(w, "%v", handler.Header)
-	f, err := os.OpenFile("./static/img/"+handler.Filename, os.O_WRONLY|os.O_CREATE, 0666)
+	fileName := path.Base(handler.Filename)
+
+	f, err := os.OpenFile("./static/img/"+fileName, os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
 		fmt.Println(err)
 		return

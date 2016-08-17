@@ -81,7 +81,7 @@ function onMessage(e) {
         var dialog = document.querySelector('#take-photo-dialog');
         var image ="<img src="+data.CommandMessage+" />";
 
-        dialog.querySelector('mdl-dialog__content').innerHTML = image;
+        dialog.querySelector('.mdl-dialog__content').innerHTML = image;
     }
     
 }  
@@ -297,7 +297,7 @@ function takePhotoDialogAdd()
         var device_id = currentNode.text;
 
         var take = {"CommandCode":CommandCode.TAKE_PHOTO, 
-        "DeviceID":node.text, 
+        "DeviceID":device_id, 
         "CommandMessage":"take photo"};
         conn.send(JSON.stringify(take));
     });
