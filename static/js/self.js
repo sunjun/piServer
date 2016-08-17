@@ -76,10 +76,11 @@ function onMessage(e) {
             $("#online").text("在线");
         else 
             $("#online").text("离线");
+        break;
         case CommandCode.TAKE_PHOTO:
         $("#mdl-spinner").remove();
         var dialog = document.querySelector('#take-photo-dialog');
-        var image ="<img src="+data.CommandMessage+" />";
+        var image ='<img width=100% height=100% src="'+data.CommandMessage+'" />';
 
         dialog.querySelector('.mdl-dialog__content').innerHTML = image;
     }
@@ -295,6 +296,9 @@ function takePhotoDialogAdd()
     showDialogButton.addEventListener('click', function() {
         dialog.showModal();
         var device_id = currentNode.text;
+        var spinner = '<div class="mdl-spinner mdl-js-spinner is-active" id="mdl-spinner"></div>';
+        dialog.querySelector('.mdl-dialog__content').innerHTML = spinner;
+
 
         var take = {"CommandCode":CommandCode.TAKE_PHOTO, 
         "DeviceID":device_id, 
@@ -303,12 +307,7 @@ function takePhotoDialogAdd()
     });
 
     dialog.querySelector('#apply-close').addEventListener('click', function() {
-        // $.get("device_info", {device_id:device_id},function(data,status){
-
-        // });
-
-        // dialog.close();
-        $("#mdl-spinner").remove();
+        dialog.close();
     });
 
     

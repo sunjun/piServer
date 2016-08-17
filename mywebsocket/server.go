@@ -126,9 +126,8 @@ func clientMainServer(ws *websocket.Conn) {
 			fmt.Println(command.CommandMessage)
 
 		case TAKE_PHOTO:
+			command.CommandMessage = "/static/img/image.jpg"
 			b, err := json.Marshal(command)
-
-			command.CommandMessage = "http://192.168.1.103:23456/static/img/image.jpg"
 			err = websocket.Message.Send(tempWs, string(b))
 			if err != nil {
 				fmt.Println(err)
