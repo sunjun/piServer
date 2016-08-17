@@ -14,7 +14,9 @@
 <link rel="stylesheet" href="/static/css/dialog-polyfill.css">
 
 <link rel="stylesheet" href="/static/css/material.css">
+<!-- 
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+-->
 <link rel="import" href="photo_setting.html"> 
 
 <script src="/static/js/dialog-polyfill.js"></script>
@@ -109,7 +111,7 @@
                         </div>
 
                         <div class="col-md-12">
-                            <img id="picture-0" src="../../../Public/1.jpg" width="100%" height="800px" />
+                            <img id="picture-0" src="../../../Public/1.jpg" width="100%" height="100%" />
                         </div>
                     </div>
 
@@ -128,20 +130,20 @@
 
                         <div class="col-md-6">
                             <div ><label id="picture-date1" >拍照时间 2016－07-31 08:00:00 </label></div>
-                            <img id="picture-1" src="../../../Public/1.jpg" width="100%" height="300" />
+                            <img id="picture-1" src="../../../Public/1.jpg" width="100%" height="100％" />
                         </div> 
 
                         <div class="col-md-6">
                             <div ><label id="picture-date2" >拍照时间 2016－07-31 08:00:00 </label></div>
-                            <img id="picture-2" src="../../../Public/1.jpg" width="100%" height="300" />
+                            <img id="picture-2" src="../../../Public/1.jpg" width="100%" height="100％" />
                         </div> 
                         <div class="col-md-6">
                             <div ><label id="picture-date3" >拍照时间 2016－07-31 08:00:00 </label></div>
-                            <img id="picture-3" src="../../../Public/1.jpg" width="100%" height="300" />
+                            <img id="picture-3" src="../../../Public/1.jpg" width="100%" height="100％" />
                         </div> 
                         <div class="col-md-6">
                             <div ><label id="picture-date4" >拍照时间 2016－07-31 08:00:00 </label></div>
-                            <img id="picture-4" src="../../../Public/1.jpg" width="100%" height="300" />
+                            <img id="picture-4" src="../../../Public/1.jpg" width="100%" height="100％" />
                         </div> 
                         <div class="col-md-12"> 巡视状态 </div>
                         <div class="col-md-12">
@@ -265,7 +267,7 @@
 
         </div>
         <div class="mdl-dialog__actions">
-            <button type="button" class="mdl-button" id="apply-close">保存关闭</button>
+            <button type="button" class="mdl-button" id="apply-close">关闭</button>
         </div> 
         </dialog>
         <!-- dialog html end -->

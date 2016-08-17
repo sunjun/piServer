@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/astaxie/beego"
 	"github.com/sunjun/piServer/models"
+	// "fmt"
 )
 
 type GroupDevice struct {
@@ -17,6 +18,14 @@ type response struct {
 
 type DeviceController struct {
 	beego.Controller
+}
+
+// @router /status [get]
+func (c *DeviceController) Status() {
+	deviceId := c.GetString("device_id")
+
+	c.Data["json"] = models.GetLastFive(deviceId)
+	c.ServeJSON()
 }
 
 // @router /group [get]

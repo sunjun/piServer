@@ -5,10 +5,15 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"path"
+	"time"
 
+	"database/sql"
+
+	_ "github.com/go-sql-driver/mysql"
 	"golang.org/x/net/websocket"
 )
 
@@ -37,10 +42,16 @@ type Command struct {
 var deviceList []*device
 var tempWs *websocket.Conn
 
+var db *sql.DB
 var port *int = flag.Int("p", 23456, "Port to listen.")
 
 func initDeviceList() {
 	deviceList = make([]*device, 0, 100)
+	var err error
+	db, err = sql.Open("mysql", "root:123@/piphoto")
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 // sendRecvServer echoes back text messages sent from client
@@ -126,14 +137,14 @@ func clientMainServer(ws *websocket.Conn) {
 			fmt.Println(command.CommandMessage)
 
 		case TAKE_PHOTO:
-			command.CommandMessage = "/static/img/image.jpg"
+			insertPhoto(command.DeviceID, command.CommandMessage)
+			command.CommandMessage = fmt.Sprintf("static/img/%s", command.CommandMessage)
 			b, err := json.Marshal(command)
 			err = websocket.Message.Send(tempWs, string(b))
 			if err != nil {
 				fmt.Println(err)
 				return
 			}
-
 			fmt.Println(command.CommandMessage)
 		}
 
@@ -246,7 +257,24 @@ func upload(w http.ResponseWriter, r *http.Request) {
 	io.Copy(f, file)
 }
 
+func insertPhoto(id, path string) {
+	stmtIns, err := db.Prepare("INSERT INTO picture(path, device_Id, photo_date) VALUES(?, ?, NOW())") // ? = placeholder
+	datetime := time.Now().Format(time.RFC3339)
+	fmt.Println(datetime)
+	if err != nil {
+		panic(err.Error()) // proper error handling instead of panic in your app
+	}
+	defer stmtIns.Close() // Close the statement when we leave main() / the program terminates
+
+	// _, err = stmtIns.Exec(path, id, datetime) // Insert tuples (i, i^2)
+	_, err = stmtIns.Exec(path, id) // Insert tuples (i, i^2)
+	if err != nil {
+		panic(err.Error()) // proper error handling instead of panic in your app
+	}
+}
+
 func RunWebsocket() {
+	initDeviceList()
 	flag.Parse()
 	http.Handle("/sendRecvText", websocket.Handler(sendRecvServer))
 	http.Handle("/clientUpdateServer", websocket.Handler(clientUpdateServer))

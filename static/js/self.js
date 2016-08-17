@@ -83,6 +83,7 @@ function onMessage(e) {
         var image ='<img width=100% height=100% src="'+data.CommandMessage+'" />';
 
         dialog.querySelector('.mdl-dialog__content').innerHTML = image;
+        updateDeviceStatus(currentNode);
     }
     
 }  
@@ -196,19 +197,34 @@ function updateMap(node)
 
 function updateDeviceStatus(node)
 {
-    $.get("device_status",{device_id: node.text}, function(data,status){
+    $.get("v1/device/status",{device_id: node.text}, function(data,status){
         //alert(data[0].device_photo_size);
-        $("#picture-0").attr("src", data[0].path);
-        $("#picture-1").attr("src", data[1].path);
-        $("#picture-2").attr("src", data[2].path);
-        $("#picture-3").attr("src", data[3].path);
-        $("#picture-4").attr("src", data[4].path);
+        if (data.length < 5) {
+            $("#picture-0").attr("src", "");
+            $("#picture-1").attr("src", "");
+            $("#picture-2").attr("src", "");
+            $("#picture-3").attr("src", "");
+            $("#picture-4").attr("src", "");
 
-        $("#picture-date0").html(data[0].photo_date);
-        $("#picture-date1").html(data[1].photo_date);
-        $("#picture-date2").html(data[2].photo_date);
-        $("#picture-date3").html(data[3].photo_date);
-        $("#picture-date4").html(data[4].photo_date);
+            $("#picture-date0").html("");
+            $("#picture-date1").html("");
+            $("#picture-date2").html("");
+            $("#picture-date3").html("");
+            $("#picture-date4").html("");
+
+        } else {
+            $("#picture-0").attr("src", data[0].path);
+            $("#picture-1").attr("src", data[1].path);
+            $("#picture-2").attr("src", data[2].path);
+            $("#picture-3").attr("src", data[3].path);
+            $("#picture-4").attr("src", data[4].path);
+
+            $("#picture-date0").html(data[0].photo_date);
+            $("#picture-date1").html(data[1].photo_date);
+            $("#picture-date2").html(data[2].photo_date);
+            $("#picture-date3").html(data[3].photo_date);
+            $("#picture-date4").html(data[4].photo_date);    
+        }
     });
     getDevicesStatus(node);
 }
@@ -296,14 +312,21 @@ function takePhotoDialogAdd()
     showDialogButton.addEventListener('click', function() {
         dialog.showModal();
         var device_id = currentNode.text;
-        var spinner = '<div class="mdl-spinner mdl-js-spinner is-active" id="mdl-spinner"></div>';
-        dialog.querySelector('.mdl-dialog__content').innerHTML = spinner;
 
+        if ($("#online").text() == "在线") {
+            var spinner = '<div class="mdl-spinner mdl-js-spinner is-active" id="mdl-spinner"></div>';
+            dialog.querySelector('.mdl-dialog__content').innerHTML = spinner;
 
-        var take = {"CommandCode":CommandCode.TAKE_PHOTO, 
-        "DeviceID":device_id, 
-        "CommandMessage":"take photo"};
-        conn.send(JSON.stringify(take));
+            var take = {"CommandCode":CommandCode.TAKE_PHOTO, 
+            "DeviceID":device_id, 
+            "CommandMessage":"take photo"};
+            conn.send(JSON.stringify(take));
+        } else {
+            dialog.querySelector('.mdl-dialog__content').innerHTML = "设备离线不能拍照";
+
+        }
+
+        
     });
 
     dialog.querySelector('#apply-close').addEventListener('click', function() {
