@@ -45,7 +45,7 @@ function getDevicesStatus(node)
 }
 function startWebsocket()
 {
-    conn = new WebSocket("ws://localhost:23456/webControlServer");
+    conn = new WebSocket("ws://mindfulstart.net:23456/webControlServer");
     conn.onopen = function(e) {
         onOpen(e);
     }

@@ -4,3 +4,4 @@ piServer
 lastupdate.tmp
 .DS_Store
 img/
+*.exe
